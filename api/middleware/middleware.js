@@ -1,6 +1,6 @@
 const Cars = require('../cars-model');
 
-const validateCarId = async (res, req, next) => {
+const validateCarId = async (req, res, next) => {
     const { id } = req.params;
     try {
         const car = await Cars.get(id);
@@ -20,7 +20,7 @@ const validateCar = (req, res, next) => {
         res.status(400).json({ message: 'Missing car data' });
     } else if
         (!req.body.vin || !req.body.make || !req.body.model || !req.body.mileage || !req.body.transmissionType) {
-            res.status(400).json({ message: 'Missing required fields' })
+            res.status(400).json({ message: 'Missing required fields' });
         } else {
             next();
         }

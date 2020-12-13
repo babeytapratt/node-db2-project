@@ -1,47 +1,40 @@
 const db = require('../data/dbConfig');
-const mappers = require();
+
 
 module.exports = {
     get,
+    getById,
     insert,
     update,
     remove,
 };
 
-function get(id) {
-    let query = db('cars');
+function get() {
+    return db('cars');
+  }
 
-    if (id) {
-        return query
-            .where('id', id)
-            .first()
-            .then((car) => {
-                if (car) {
-                    return mappers.carToBody(car);
-                } else {
-                    return null;
-                }
-            });
-    } else {
-        return query.then((cars) => {
-            return cars.map((car) => mappers.carToBody(car));
-        });
-    }
-}
-
-function insert(car) {
+  function getById(id) {
     return db('cars')
-        .insert(car, 'id')
-        .then(([id]) => get(id));
-}
+      .where({ id })
+      .first();
+  }
 
-function update(id, changes) {
+  function insert(post) {
     return db('cars')
-        .where('id', id)
-        .update(changes)
-        .then((count) => (count > 0 ? get(id) : null));
-}
+      .insert(post)
+      .then(ids => {
+        return getById(ids[0]);
+      });
+  }
 
-function remove(id) {
-    return db('cars').where('id', id).del();
-}
+  function update(id, changes) {
+    return db('cars')
+      .where({ id })
+      .update(changes);
+  }
+
+  function remove(id) {
+    return db('cars')
+      .where('id', id)
+      .del();
+  }

@@ -5,6 +5,10 @@ const carsRouter = require('../api/cars-router');
 const server = express();
 
 server.use(express.json());
-server.use('/api/cars', carsRouter);
+server.use(carsRouter);
+
+server.get('/', (req, res) => {
+    res.send(`<h2>Let's put some cars in the database!<h2>`);
+})
 
 module.exports = server;

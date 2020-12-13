@@ -1,12 +1,10 @@
 const express = require('express');
-
 const Cars = require('./cars-model');
-
 const middleware = require('./middleware/middleware');
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
+router.get('/api/cars', (req, res) => {
     Cars.get()
         .then(cars => {
             res.status(200).json(cars);
@@ -17,11 +15,11 @@ router.get('/', (req, res) => {
         });
 });
 
-router.get('/:id', middleware.validateCarId, (req, res) => {
+router.get('/api/cars/:id', middleware.validateCarId, (req, res) => {
     res.status(200).json(req.car);
 });
 
-router.post('/', middleware.validateCar, (req, res) => {
+router.post('/api/cars', middleware.validateCar, (req, res) => {
     Cars.insert(req.body)
         .then(car => {
             res.status(201).json(car);
@@ -32,7 +30,7 @@ router.post('/', middleware.validateCar, (req, res) => {
         });
 });
 
-router.put('/:id', middleware.validateCarId, (req, res) => {
+router.put('/api/cars/:id', middleware.validateCarId, (req, res) => {
     const changes = req.body;
     Cars.update(req.params.id, changes)
         .then(car => {
@@ -44,7 +42,7 @@ router.put('/:id', middleware.validateCarId, (req, res) => {
         });
 });
 
-router.delete('/:id', middleware.validateCarId, (req, res) => {
+router.delete('/api/cars/:id', middleware.validateCarId, (req, res) => {
     Cars.remove(req.params.id)
         .then(count => {
             count > 0;
